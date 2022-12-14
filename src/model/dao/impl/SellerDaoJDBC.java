@@ -94,12 +94,26 @@ public class SellerDaoJDBC implements SellerDao {
 
 	@Override
 	public void deleteById(Integer id) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement("DELETE FROM seller WHERE Id = ? ");
+					st.setInt(1, id);
+					
+					st.executeUpdate();
+		}
+		catch(SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+		}
 
 	}
 
 	@Override
 	public Seller findById(Integer id) {
-		PreparedStatement st = null;//PretaredStatement é um objeto que permite montar a consulta SQL deixando os parâmetros para colocar depois
+		PreparedStatement st = null;//PretaredStatement é um objeto que permite montar a consulta SQL deixando os parâmetros para colocar depois, conforme exemplo abaixo.
 		ResultSet rs = null; //Comando para pegar os valores do Banco de dados
 		try {
 			st = conn.prepareStatement(
